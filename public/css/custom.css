@@ -2,10 +2,41 @@ body {
   background: #F9F8FD;
 }
 
+a {
+  color: #024A81;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  color: #EA4C89;
+}
+
 .btn-pink {
   color: #fff;
   background-color: #EA4C89;
   border-color: #EA4C89;
+}
+
+.btn-pink:hover {
+  color: #fff;
+  background-color: #EA4C89;
+  border-color: #EA4C89;
+  background-image: linear-gradient(#EA4C89, #E13074);
+}
+
+.btn-pink-outline {
+  color: #fff;
+  background-color: #EA4C89;
+  border-color: #EA4C89;
+  border-radius: 50px;
+}
+
+.btn-pink-outline:hover {
+  color: #fff;
+  background-color: #EA4C89;
+  border-color: #EA4C89;
+  background-image: linear-gradient(#EA4C89, #E13074);
 }
 
 p.setting-label {
@@ -16,13 +47,6 @@ p.setting-label {
   padding: 6px 15px;
   display: table;
   margin: 0;
-}
-
-.btn-pink:hover {
-  color: #fff;
-  background-color: #EA4C89;
-  border-color: #EA4C89;
-  background-image: linear-gradient(#EA4C89, #E13074);
 }
 
 .card {
@@ -68,13 +92,27 @@ p.setting-label {
 }
 
 .navbar-brand img {
-  height: 40px;
+  height: 30px;
 }
 
 img.profile {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+}
+
+img.profile-xs {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+img.profile-xsr {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-left: 10px;
 }
 
 img.profile-xl {
@@ -141,7 +179,7 @@ a.gray {
 }
 
 .bg-gradient {
-  background-image: linear-gradient(#fff, #eee) !important;
+  /* background-image: linear-gradient(#fff, #eee)!important; */
 }
 
 .required {
@@ -213,4 +251,10 @@ a.gray {
 
 .trash a {
   color: #000;
+}
+
+.attachment img {
+  width: 100%;
+  margin: 0 0 25px 0;
+  border-radius: 12px;
 }

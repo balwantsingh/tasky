@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title',config('app.name', 'Laravel'))</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -19,7 +19,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+
+    <livewire:styles />
 </head>
 
 <body>
@@ -52,7 +55,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link {{ request()->is('settings') ? 'active' : '' }}" href="{{ route('settings') }}">
                                     <i class="bi bi-gear mr-5 2x" style="font-size: 1.8rem;display: contents;"></i>
                                 </a>
                             </li>
@@ -88,10 +91,17 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>
+
+    <livewire:scripts />
+    <script>
+        window.addEventListener('closeModal', event => {
+            $("#add-deadline").modal('hide'); 
+        })
+    </script>
 </body>
 
 </html>
