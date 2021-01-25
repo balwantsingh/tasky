@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'mobile_number',
         'isActive',
+        'profile_path',
     ];
 
     /**

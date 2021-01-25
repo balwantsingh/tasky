@@ -3,14 +3,14 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use App\Models\Deadline;
+use App\Models\Department as AddDepartment;
 
-class TaskDeadline extends Component
+class Department extends Component
 {
     public $name; // table column
     public $editId; // table column
 
-    public $deadlines; //table collection get
+    public $departments; //table collection get
     
     public $wantsToUpdateModal; //wants to update modal
     
@@ -24,21 +24,21 @@ class TaskDeadline extends Component
     {
         $this->validateOnly($propertyName);
     }
-    
+
     public function clearPreviousInputValue()
     {
         $this->reset(); 
     }
 
-    public function storeDeadline()
+    public function storeDepartment()
     {
         $validatedData = $this->validate();
 
-        Deadline::create($validatedData);
+        AddDepartment::create($validatedData);
         
-        $this->dispatchBrowserEvent('closeModal', ['message' => 'Deadline added successfully']);
+        $this->dispatchBrowserEvent('closeModal', ['message' => 'Department added successfully']);
         
-        session()->flash('message', 'Deadline successfully added.');
+        session()->flash('message', 'Department successfully added.');
         
         $this->reset();
     }
@@ -47,24 +47,24 @@ class TaskDeadline extends Component
     {
         $this->wantsToUpdateModal = true;
 
-        $editData = Deadline::findOrFail($id);
+        $editData = AddDepartment::findOrFail($id);
         $this->editId = $editData->id;
         $this->name = $editData->name;
     }
 
-    public function updateDeadline()
+    public function updateDepartment()
     {
         if($this->wantsToUpdateModal)
         {
             $validatedData = $this->validate();
 
-            $findRowValue = Deadline::findOrFail($this->editId);
+            $findRowValue = AddDepartment::findOrFail($this->editId);
     
             $findRowValue->update($validatedData);
 
-            $this->dispatchBrowserEvent('closeModal',['message' => 'Deadline updated successfully']);
+            $this->dispatchBrowserEvent('closeModal',['message' => 'Department updated successfully']);
     
-            session()->flash('message', 'Deadline successfully updated.');
+            session()->flash('message', 'Department successfully updated.');
     
             $this->reset();
         }
@@ -72,16 +72,16 @@ class TaskDeadline extends Component
 
     public function putOnTrash($id)
     {
-        Deadline::destroy($id);
-    }
+        AddDepartment::destroy($id);
+    }    
 
     public function render()
     {
         try {
-            $this->deadlines = Deadline::latest()->get();
+            $this->departments = AddDepartment::latest()->get();
         } catch (\Throwable $th) {
-            $this->deadlines = false;
+            $this->departments = false;
         }
-        return view('livewire.task-deadline');
+        return view('livewire.department');
     }
 }

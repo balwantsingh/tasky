@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-header bg-white">
             <h5 class="card-title float-start m-1">Task deadline</h5>
-            <a href="#" data-bs-toggle="modal" data-bs-target="#add-deadline"
+            <a wire:click="$emitUp('clearPreviousInputValue')" href="#" data-bs-toggle="modal" data-bs-target="#add-deadline"
                 class="btn btn-sm btn-pink-outline float-end">
             <i class="bi bi-plus-square-dotted p-2"></i> New deadline
             </a>
@@ -17,7 +17,8 @@
                             class="gray-icon-setting edit"><i class="bi bi-pencil-square p-2"></i></a>
                         <a wire:click.prevent="putOnTrash({{ $deadline->id }})" 
                             onclick="confirm('Confirm delete?') || event.stopImmediatePropagation()"    
-                            href="#" data-bs-toggle="modal" data-bs-target="#delete" class="gray-icon-setting trash"><i
+                            href="#" 
+                            class="gray-icon-setting trash"><i
                             class="bi bi-trash p-2"></i></a>
                     </div>
                 </li>
@@ -45,9 +46,12 @@
                     </div>
                     <div class="modal-body">
                         <div class="d-grad form-floating mb-3">
-                            <input wire:model="name" type="text" class="form-control form-control-xl @error('name') required @enderror focus"
-                                id="floatingInput" placeholder="Deadline 1 day" required>
-                            <label for="floatingInput">Deadline i.e. 1 day</label>
+                            <input wire:model="name" 
+                                type="text" 
+                                class="form-control form-control-xl @error('name') required @enderror focus"
+                                id="deadline-name" 
+                                placeholder="Deadline 1 day" required>
+                            <label for="deadline-name">Deadline i.e. 1 day</label>
                             @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>

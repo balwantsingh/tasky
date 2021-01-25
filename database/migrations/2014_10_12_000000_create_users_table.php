@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->boolean('isActive')->default(true)->comment('is user active');
+            $table->string('profile_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

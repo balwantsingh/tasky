@@ -100,6 +100,8 @@
     <script>
         window.addEventListener('closeModal', event => {
             $("#add-deadline").modal('hide'); 
+            $("#departmentModal").modal('hide'); 
+            $("#new-user").modal('hide'); 
         })
     </script>
 </body>
