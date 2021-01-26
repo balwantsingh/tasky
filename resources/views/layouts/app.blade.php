@@ -66,8 +66,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a type="button" class="dropdown-item" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal2">Edit profile</a>
+                                        <a type="button" class="dropdown-item" href="{{ route('auth.profile',auth()->user()->id) }}">Edit profile</a>
                                     </li>
                                     <li>
                                         <hr class="dropdown-divider">
