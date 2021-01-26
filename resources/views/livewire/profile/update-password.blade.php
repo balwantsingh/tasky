@@ -7,7 +7,7 @@
                 name="current_password"
                 class="form-control form-control-xl @error('current_password') is-invalid @enderror required " 
                 id="current_password"
-                placeholder="current_password ">
+                placeholder="current_password" required>
             <label for="current_password">{{ __('Current Password') }}</label>
             @error('current_password') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
@@ -18,7 +18,7 @@
                 name="password"
                 class="form-control form-control-xl @error('password') is-invalid @enderror required " 
                 id="password"
-                placeholder="password ">
+                placeholder="password" required>
             <label for="password">{{ __('Password') }}</label>
             @error('password') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
@@ -29,7 +29,7 @@
                 wire:model="password_confirmation"
                 name="password_confirmation" 
                 class="form-control form-control-xl required"
-                id="password_confirmation-confirm" placeholder="Confirm Password ">
+                id="password_confirmation-confirm" placeholder="Confirm Password" required>
             <label for="password-confirm">{{ __('Confirm Password') }}</label>
         </div>
 
