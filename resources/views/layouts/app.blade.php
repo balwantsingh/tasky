@@ -42,6 +42,7 @@
             $("#departmentModal").modal('hide'); 
             $("#new-user").modal('hide'); 
             $("#taskModal").modal('hide'); 
+            $("#updateTaskModal").modal('hide'); 
         })
     </script>
 </body>

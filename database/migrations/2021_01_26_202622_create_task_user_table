@@ -16,6 +16,7 @@ class CreateTaskUserTable extends Migration
         Schema::create('task_user', function (Blueprint $table) {
             $table->foreignId('task_id')->constrained();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('status_id')->nullable()->constrained()->comment('open pending completed');
             $table->timestamps();
         });
     }

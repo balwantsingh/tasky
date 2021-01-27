@@ -16,6 +16,7 @@ class Task extends Model
         'name',
         'slug',
         'user_id', // this column represent task created by
+        'assign_to',
         'message',
         'department_id',
         'deadline_id',
@@ -38,6 +39,11 @@ class Task extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function assignTo()
+    {
+        return $this->belongsTo(User::class, 'assign_to');
+    }
+
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');
@@ -53,9 +59,9 @@ class Task extends Model
         return $this->belongsTo(Deadline::class, 'deadline_id');
     }
 
-    public function assignTo()
+    public function scopeIsActive($query)
     {
-        return $this->belongsToMany(User::class);
+        return $query->where('isActive',true);
     }
 
 }

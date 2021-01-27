@@ -24,7 +24,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $taskKanban = Status::withCount('tasks')->get();
-        return view('dashboard' ,compact('taskKanban'));
+        return view('dashboard');
     }
 }

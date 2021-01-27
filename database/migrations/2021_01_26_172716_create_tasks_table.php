@@ -17,7 +17,8 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->foreignId('user_id')->constrained(); 
+            $table->foreignId('user_id')->constrained()->comment('task created by admin'); 
+            $table->unsignedBigInteger('assign_to')->nullable()->comment('assign task to');
             $table->text('message');
             $table->foreignId('department_id')->constrained();
             $table->foreignId('deadline_id')->nullable()->constrained();

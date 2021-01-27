@@ -1,4 +1,5 @@
 <div>
+    @hasrole('admin')
     <button type="button" class="btn btn-xl btn-pink float-end" data-bs-toggle="modal" data-bs-target="#taskModal">
         <i class="bi bi-plus-square-dotted p-2"></i> New Task
     </button>
@@ -100,4 +101,5 @@
             </form>
         </div>
     </div>
+    @endhasrole
 </div>

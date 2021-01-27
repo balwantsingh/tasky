@@ -29,12 +29,14 @@
                             </li>
                         @endif
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('settings') ? 'active' : '' }}"
-                                href="{{ route('settings') }}">
-                                <i class="bi bi-gear mr-5 2x" style="font-size: 1.8rem;display: contents;"></i>
-                            </a>
-                        </li>
+                        @hasrole('admin')
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->is('settings') ? 'active' : '' }}"
+                                    href="{{ route('settings') }}">
+                                    <i class="bi bi-gear mr-5 2x" style="font-size: 1.8rem;display: contents;"></i>
+                                </a>
+                            </li>
+                        @endhasrole
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown">

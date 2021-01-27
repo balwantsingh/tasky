@@ -2,50 +2,59 @@
 
 namespace App\Http\Livewire\Task;
 
-use App\Models\Deadline;
 use App\Models\User;
 use Livewire\Component;
+use App\Models\Deadline;
 use App\Models\Department;
+use App\Models\Task;
 
-class TaskCrud extends Component
+class UpdateTask extends Component
 {
-
+    public $task;
+    
     public $department_id;
-    public $title;
+    public $updatetitle;
     public $message;
     public $assign_to;
     public $deadline_id;
+
+    public $wantsToUpdateTask;
 
     public $departments; //Dept Model
     public $users = []; //User Model for loop 
     public $deadlines; //Deadline Model
 
-    public function storeTask()
+    protected $listeners = ['upLive' => 'editTask'];
+    // public function mount($task)
+    // {
+    //     //
+    // }
+
+    public function editTask()
+    {
+        $this->wantsToUpdateTask = true;
+        $editData = Task::findOrFail($this->task->id);
+        
+        $this->department_id = $editData->department_id;
+        $this->updatetitle = $editData->name;
+        $this->message = $editData->message;
+        $this->assign_to = $editData->assign_to;
+        $this->deadline_id = $editData->deadline_id;
+        $this->emit('livewireDashboard');
+    }
+
+    public function updateTask()
     {
         $this->validate([
-            'title' => ['required','string','max:55'],
+            'updatetitle' => ['required','string','max:55'],
             'message' => ['required','string','max:255'],
             'department_id' => ['required','not_in:0'],
             'assign_to' => ['required','not_in:0'],
             'deadline_id' => ['required','not_in:0'],
         ]);
 
-        $task = auth()->user()->tasks()->create([
-            'name' => $this->title,
-            'message' => $this->message,
-            'department_id' => $this->department_id,
-            'deadline_id' => $this->deadline_id,
-            'assign_to' => $this->assign_to,
-            'status_id' => 1, //byDefault Open Task
-        ]);
-
-        $this->dispatchBrowserEvent('closeModal',['message' => 'Task created successfully.']);
-    
-        session()->flash('message', 'Task created successfully.');
-
-        $this->reset();
     }
-    
+
     public function render()
     {
         try {
@@ -60,6 +69,6 @@ class TaskCrud extends Component
         } catch (\Throwable $th) {
             $this->users = false;
         }
-        return view('livewire.task.task-crud');
+        return view('livewire.task.update-task');
     }
 }
