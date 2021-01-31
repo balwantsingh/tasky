@@ -55,7 +55,14 @@ class UserPolicy
     {
         return $user->id === $model->id
             ? Response::allow()
-            : Response::deny('You can not access other profile.');;
+            : Response::deny('You can not access others profile.');;
+    }
+
+    public function adminAccess(User $user)
+    {
+        return $user->hasRole('user')
+            ? Response::allow()
+            : Response::deny('You can not access this.');;
     }
 
     // /**

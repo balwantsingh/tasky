@@ -20,4 +20,4 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('/settings', App\Http\Controllers\SettingController::class)->name('settings');
 
-    Route::get('tasks/lists', [TaskList::class, 'render'])->name('list.tasks');
+    Route::get('tasks/lists', App\Http\Controllers\TaskController::class)->name('list.tasks');

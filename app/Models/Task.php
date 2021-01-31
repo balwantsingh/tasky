@@ -64,4 +64,29 @@ class Task extends Model
         return $query->where('isActive',true);
     }
 
+    public function scopeFilterTaskWithStatus($query, $statusName)
+    {
+        $query->when($statusName, function($query1) use ($statusName){
+            $query1->whereHas('status',function($query2)  use ($statusName){
+                $query2->where('name',$statusName);
+            });
+        });
+    }
+    
+    public function scopeTrashedTask($query, $statusName)
+    {
+        $query->when($statusName == "Trashed", function($query) use($statusName){
+            $query->onlyTrashed($statusName);
+        });
+    }
+
+    /**
+     * This scope is use for get current logged user task except admin
+     *
+     */
+    public function scopeNotAnAdminUser($q)
+    {
+        $q->where('assign_to',auth()->user()->id);
+    }
+
 }

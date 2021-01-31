@@ -5,7 +5,7 @@
             <div class="col-md-4">
                 <div class="card rounded-pill bg-gradient">
                     <div class="card-body">
-                        <span class="fs-5 fw-bold p-2">{{ $status->name }}</span><span
+                        <span class="fs-5 fw-bold p-2">{{ $status->name }} {{ $status->id }}</span><span
                             class="badge position-absolute top-50 end-0 translate-middle bg-pink rounded-pill p-2">{{ count($status->tasks) }}</span>
                     </div>
                 </div>
