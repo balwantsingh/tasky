@@ -1,8 +1,8 @@
 <div>
     @include('includes.livewire-message')
-    <div class="row">
+    <div class="row" wire:sortable-group="updateTaskOrder">
         @foreach($taskKanban as $status)
-            <div class="col-md-4">
+            <div class="col-md-4" wire:key="group-{{ $status->id }}" wire:sortable-group.item-group="{{ $status->id }}">
                 <div class="card rounded-pill bg-gradient">
                     <div class="card-body">
                         <span class="fs-5 fw-bold p-2">{{ $status->name }} {{ $status->id }}</span><span
@@ -10,12 +10,12 @@
                     </div>
                 </div>
                 @foreach($status->tasks as $task)
-                    <div class="card br-10 m-2">
+                    <div class="card br-10 m-2" wire:key="task-{{ $task->id }}" wire:sortable-group.item="{{ $task->id }}">
                         <div class="card-body">
                             <img class="profile-xl float-sm-end border" src="{{ $task->assignTo->userProfile() }}">
                             <h5 class="text-black m-0 fs-6 fw-bold">
                                 <a wire:click.prevent="viewTask({{ $task->id }})" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#viewTask">{{ $task->assignTo->name }}</a>
+                                    data-bs-target="#viewTask">{{ $task->assignTo->name }}{{ $task->id }}</a>
                             </h5>
                             <p class="text-dark-gray m-0 fst-italic">Department: {{ $task->department->name }}
                             </p>
@@ -47,7 +47,7 @@
         @endforeach
     </div>
     <!-- Modal Update Task-->
-    @if($wantsToUpdateTask)
+    {{-- @if($wantsToUpdateTask) --}}
         <div wire:ignore.self class="modal fade" id="updateTaskModal" tabindex="-1"
             aria-labelledby="updateTaskModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -145,7 +145,7 @@
                 </form>
             </div>
         </div>
-    @endif
+    {{-- @endif --}}
 
     @if($wantsToViewTask)
         <!-- Modal View Task-->

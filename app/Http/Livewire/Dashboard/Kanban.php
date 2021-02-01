@@ -28,7 +28,7 @@ class Kanban extends Component
     public $users = []; //User Model for loop 
     public $deadlines; //Deadline Model
 
-    public $listeners = ['closeButton'];
+    public $listeners = ['closeButton', 'listData' => 'render'];
 
     public function editTask($id)
     {
@@ -66,7 +66,6 @@ class Kanban extends Component
             $this->dispatchBrowserEvent('closeModal',['message' => 'Task updated successfully.']);
         
             session()->flash('message', 'Task updated successfully.');
-    
             $this->reset();
         }
     }
@@ -89,8 +88,21 @@ class Kanban extends Component
         $this->reset();
     }
 
+    // public function updateGroupOrder()
+    // {
+    //     // ray()->clearAll();
+    //     ray('group order'); 
+    // }
+
+    public function updateTaskOrder($orderIds)
+    {
+        dd($orderIds);
+        ray($orderIds);
+    }
+
     public function render()
     {
+        ray()->clearAll();
         $this->departments = Department::latest()->get();
         if(!empty($this->department_id))
         {

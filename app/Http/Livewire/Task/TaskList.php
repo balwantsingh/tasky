@@ -25,6 +25,7 @@ class TaskList extends Component
             $this->recentlyAddedPost = $task;
         }
     */
+    public $listeners = ['listData' => 'mount'];
 
     /**
      * Filter Task based on status

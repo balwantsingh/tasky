@@ -42,7 +42,7 @@ class TaskCrud extends Component
         $this->dispatchBrowserEvent('closeModal',['message' => 'Task created successfully.']);
     
         session()->flash('message', 'Task created successfully.');
-
+        $this->emit('listData');
         $this->reset();
     }
     
