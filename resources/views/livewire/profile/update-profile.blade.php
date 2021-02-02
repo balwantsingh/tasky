@@ -1,6 +1,17 @@
 <div>
     @include('includes.livewire-message')
     <form wire:submit.prevent="updateProfile()">
+        
+        <div class="mb-2">
+            <img src="{{ auth()->user()->userProfile() }}" alt="{{ auth()->user()->name }}" class="mb-2 rounded-circle" style="width: 5rem; height: 5rem;">
+            <input wire:model="profile_path" class="form-control" 
+                type="file" 
+                id="profile_path-{{ $iteration }}" 
+                name="profile_path"
+                style="width: 35%">
+            @error('profile_path') <span class="error">{{ $message }}</span> @enderror
+        </div>
+        
         <div class="form-floating mb-2">
             <input
                 wire:model="name"
