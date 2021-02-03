@@ -94,15 +94,14 @@ class Kanban extends Component
     //     ray('group order'); 
     // }
 
-    public function updateTaskOrder($orderIds)
-    {
-        dd($orderIds);
-        ray($orderIds);
-    }
+    // public function updateTaskOrder($orderIds)
+    // {
+    //     dd($orderIds);
+    //     ray($orderIds);
+    // }
 
     public function render()
     {
-        ray()->clearAll();
         $this->departments = Department::latest()->get();
         if(!empty($this->department_id))
         {

@@ -185,9 +185,17 @@
                         <p>
                             {{ $taskView->message }}
                         </p>
-                        {{-- <div class="attachment">
-                            <img src="img/screen1.jpg">
-                        </div> --}}
+                        <div class="row attachment">
+                            @forelse($taskView->documents as $doc)
+                                @if($doc->fileType())
+                                    <img src="{{ $doc->imageUrl() }}" style="width: 15rem;">
+                                @else
+                                    <div>{{ $doc->imageUrl() }}</div>
+                                @endif
+                            @empty
+                                
+                            @endforelse
+                        </div>
                     </div>
                 </div>
             </div>

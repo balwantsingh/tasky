@@ -89,4 +89,9 @@ class Task extends Model
         $q->where('assign_to',auth()->user()->id);
     }
 
+    public function documents()
+    {
+        return $this->morphMany(Document::class, 'documentable');
+    }
+
 }

@@ -84,12 +84,33 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-12 mb-3">
+                        <div class="col-12 mb-3"
+                        x-data="{ isUploading: false, progress: 0 }"
+                        x-on:livewire-upload-start="isUploading = true"
+                        x-on:livewire-upload-finish="isUploading = false"
+                        x-on:livewire-upload-error="isUploading = false"
+                        x-on:livewire-upload-progress="progress = $event.detail.progress"
+                        >
                             <div class="upload-btn-wrapper">
                                 <button class="upload"><i class="bi bi-paperclip"></i> Attachment</button>
-                                <input type="file" name="myfile" />
+                                <input type="file" wire:model="attachments" name="attachments" id="attachments{{ $iteration }}" multiple />
+                                @error('attachments.*') <span class="error">{{ $message }}</span> @enderror
                             </div>
-                        </div> --}}
+                            <div x-show="isUploading">
+                                <progress max="100" x-bind:value="progress"></progress>
+                            </div>
+                        </div>
+                        @if($attachments)
+                            <div class="col-12">
+                                @foreach($attachments as $photo)
+                                    @if(\Str::startsWith($photo->getMimeType(), 'image'))
+                                        <img src="{{ $photo->temporaryUrl() }}" style="width: 15rem;">
+                                    @else
+                                        <div>{{ $photo->getClientOriginalName() }}</div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-lg btn-pink b-block">

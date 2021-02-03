@@ -6,9 +6,11 @@ use App\Models\Deadline;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Department;
+use Livewire\WithFileUploads;
 
 class TaskCrud extends Component
 {
+    use WithFileUploads;
 
     public $department_id;
     public $title;
@@ -20,6 +22,9 @@ class TaskCrud extends Component
     public $users = []; //User Model for loop 
     public $deadlines; //Deadline Model
 
+    public $attachments = [];
+    public $iteration;
+
     public function storeTask()
     {
         $this->validate([
@@ -28,6 +33,7 @@ class TaskCrud extends Component
             'department_id' => ['required','not_in:0'],
             'assign_to' => ['required','not_in:0'],
             'deadline_id' => ['required','not_in:0'],
+            'attachments.*' => ['mimes:jpg,jpeg,png,bmp,gif,svg,webp,pdf,docx','max:1024'],
         ]);
 
         $task = auth()->user()->tasks()->create([
@@ -38,6 +44,20 @@ class TaskCrud extends Component
             'assign_to' => $this->assign_to,
             'status_id' => 1, //byDefault Open Task
         ]);
+        
+        if ($this->attachments) 
+        {
+            foreach ($this->attachments as $photo) {
+                $path_url = $photo->storePublicly('task-documents', 'public');
+                $task->documents()->create([
+                    'file_name' => $photo->getClientOriginalName(),
+                    'mime_type' => $photo->getMimeType(),
+                    'file_path' => $path_url,
+                ]);
+            }
+        }
+        
+        $this->iteration++;
 
         $this->dispatchBrowserEvent('closeModal',['message' => 'Task created successfully.']);
     
