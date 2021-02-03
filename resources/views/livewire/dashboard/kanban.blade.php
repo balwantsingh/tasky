@@ -6,7 +6,7 @@
             <div class="col-4">
                 <div class="card rounded-pill bg-gradient">
                     <div class="card-body kanban-card">
-                        <span class="fs-5 fw-bold p-2 card-title">{{ $status->name }}</span><span
+                        <span class="fs-5 fw-bold p-2">{{ $status->name }}</span><span
                             class="badge position-absolute top-50 end-0 translate-middle bg-pink rounded-pill p-2">{{ count($status->tasks) }}</span>
                     </div>
                 </div>
@@ -14,7 +14,7 @@
                     class="dragContent">&nbsp;
                     {{-- Loop start outcomes has task --}}
                     @foreach($status->tasks as $task)
-                        <div id="task_{{ $task->id }}" class="card kanban-card br-10 m-2">
+                        <div id="task_{{ $task->id }}" class="card br-10 m-2 moveCard">
                             <div class="card-body">
                                 <img class="profile-xl float-sm-end border"
                                     src="{{ $task->assignTo->userProfile() }}">
@@ -32,21 +32,21 @@
                                 <span
                                     class="text-pink mt-1 float-start">{{ $task->created_at->calendar().' '.$task->created_at->isoFormat('Do Y') }}</span>
                                 <span class="m-3 text-pink"><i class="bi bi-clock-history"></i> 24:00:00<span>
-                                <div class="float-end">
-                                    @hasrole('admin')
-                                        <a wire:click.prevent="editTask({{ $task->id }})" href="#"
-                                            class="gray" data-bs-toggle="modal"
-                                            data-bs-target="#updateTaskModal">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a wire:click.prevent="putTaskOnTrash({{ $task->id }})"
-                                            onclick="confirm('Confirm delete?') || event.stopImmediatePropagation()"
-                                            href="#" class="gray"><i class="bi bi-trash p-2"></i></a>
-                                    @endhasrole
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#comment" class="gray">
-                                        <i class="bi bi-chat-right-text"></i>
-                                    </a>
-                                </div>
+                                        <div class="float-end">
+                                            @hasrole('admin')
+                                                <a wire:click.prevent="editTask({{ $task->id }})" href="#"
+                                                    class="gray" data-bs-toggle="modal"
+                                                    data-bs-target="#updateTaskModal">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <a wire:click.prevent="putTaskOnTrash({{ $task->id }})"
+                                                    onclick="confirm('Confirm delete?') || event.stopImmediatePropagation()"
+                                                    href="#" class="gray"><i class="bi bi-trash p-2"></i></a>
+                                            @endhasrole
+                                            {{-- <a href="#" data-bs-toggle="modal" data-bs-target="#comment" class="gray">
+                                                <i class="bi bi-chat-right-text"></i>
+                                            </a> --}}
+                                        </div>
                             </div>
                         </div>
                     @endforeach
@@ -55,76 +55,6 @@
         @endforeach
         {{-- loop end card --}}
     </div>
-    <script type="text/javascript">
-        window.onload = function () {
-            var stageIdsArr = [];
-
-            $(".dragContent").each(function () {
-
-                // alert($(this).attr('id'));
-
-                var stId = "#" + $(this).attr('id');
-
-                stageIdsArr.push(document.querySelector(stId));
-
-            });
-
-            var dragulaCards = dragula(stageIdsArr);
-
-            dragulaCards.on('drop', function (el, target, source, sibling) {
-
-                taskDragDrop(el.id, target.id, source.id);
-
-            });
-
-            var dragulaKanban = dragula([
-
-                document.querySelector('#kanban')
-
-            ], {
-
-                moves: function (el, container, handle) {
-
-                    return handle.classList.contains('card-title');
-
-                }
-
-            });
-
-        }
-
-    </script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script>
-        const taskKanbanApi =
-            "{{ url('kanban/tasks/{task_id}/{status_id}/{from_id}') }}";
-        //Drag and drop feature
-        function taskDragDrop(task_id, status_id, from_id) {
-
-            $.get(taskKanbanApi, {
-
-                'task_id': task_id,
-
-                'status_id': status_id,
-
-                'from_id': from_id,
-
-            }, function (result, status) {
-
-                // alert(result);
-                swal({
-                    title: "Updated!",
-                    text: `Task ${task_id} status updated!`,
-                    icon: "success",
-                });
-                var res = eval("(" + result + ")");
-
-            });
-
-        }
-
-    </script>
-
     <!-- Modal Update Task-->
     {{-- @if($wantsToUpdateTask) --}}
     <div wire:ignore.self class="modal fade" id="updateTaskModal" tabindex="-1" aria-labelledby="updateTaskModalLabel"

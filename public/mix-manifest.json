@@ -1,5 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/dragula.js": "/js/dragula.js",
+    "/js/sweetalert.js": "/js/sweetalert.js",
     "/css/app.css": "/css/app.css",
+    "/css/dragula.css": "/css/dragula.css",
     "/css/custom.css": "/css/custom.css"
 }
