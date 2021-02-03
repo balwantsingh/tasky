@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Mail\UserCreated;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Department;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AddUser extends Component
 {
@@ -53,6 +55,8 @@ class AddUser extends Component
         $user = User::create($validatedData);
 
         $user->departments()->attach($this->department_id);
+        
+        Mail::to($this->email)->send(new UserCreated($user));
         
         $this->dispatchBrowserEvent('closeModal', ['message' => 'User added successfully']);
         
