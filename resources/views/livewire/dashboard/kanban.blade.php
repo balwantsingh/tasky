@@ -4,118 +4,62 @@
         {{-- card loop start here --}}
         @foreach($taskKanban as $status)
             <div class="col-4">
-                <div class="card card-default">
-                    <div class=" card-header kanban-card">
-                        <h3 class="card-title">
-                            {{ $status->name }}
-                        </h3>
+                <div class="card rounded-pill bg-gradient">
+                    <div class="card-body kanban-card">
+                        <span class="fs-5 fw-bold p-2 card-title">{{ $status->name }}</span><span
+                            class="badge position-absolute top-50 end-0 translate-middle bg-pink rounded-pill p-2">{{ count($status->tasks) }}</span>
                     </div>
-                    <div class="card-body">
-                        {{-- dynamic id will call --}}
-                        <div id="{{ Str::replaceFirst(' ','_',$status->name) }}_{{ $status->id }}"
-                            class="dlstage">&nbsp;
-                            {{-- Loop start outcomes has task --}}
-                            @foreach($status->tasks as $task)
-                                <div id="card_{{ $task->id }}" class="kanban-card mb-2" role="alert">
-                                    <img class="profile-xl float-sm-end border"
-                                        src="{{ $task->assignTo->userProfile() }}">
-                                    <h5 class="text-black m-0 fs-6 fw-bold">
-                                        <a wire:click.prevent="viewTask({{ $task->id }})" href="#"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#viewTask">{{ $task->assignTo->name }}{{ $task->id }}</a>
-                                    </h5>
-                                    <p class="text-dark-gray m-0 fst-italic">Department:
-                                        {{ $task->department->name }}
-                                    </p>
-                                    <p class="text-gray m-0 w-90">
-                                        Task Title: {{ $task->name }}
-                                        <a href="#" class="gray"><i class="bi bi-paperclip p-1 gray"></i></a>
-                                    </p>
-                                    <span class="text-pink mt-1 float-start">
-                                        {{ $task->created_at->calendar().' '.$task->created_at->isoFormat('Do Y') }}
-                                    </span>
-                                    <span class="m-3 text-pink">
-                                        <i class="bi bi-clock-history"></i>
-                                        24:00:00
-                                        <span>
-                                            <div class="float-end">
-                                                @hasrole('admin')
-                                                    <a wire:click.prevent="editTask({{ $task->id }})" href="#"
-                                                        class="gray" data-bs-toggle="modal"
-                                                        data-bs-target="#updateTaskModal">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </a>
-                                                    <a wire:click.prevent="putTaskOnTrash({{ $task->id }})"
-                                                        onclick="confirm('Confirm delete?') || event.stopImmediatePropagation()"
-                                                        href="#" class="gray"><i class="bi bi-trash p-2"></i></a>
-                                                @endhasrole
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#comment"
-                                                    class="gray">
-                                                    <i class="bi bi-chat-right-text"></i>
-                                                </a>
-                                            </div>
+                </div>
+                <div id="{{ Str::replaceFirst(' ','_',$status->name) }}_{{ $status->id }}"
+                    class="dragContent">&nbsp;
+                    {{-- Loop start outcomes has task --}}
+                    @foreach($status->tasks as $task)
+                        <div id="task_{{ $task->id }}" class="card kanban-card br-10 m-2">
+                            <div class="card-body">
+                                <img class="profile-xl float-sm-end border"
+                                    src="{{ $task->assignTo->userProfile() }}">
+                                <h5 class="text-black m-0 fs-6 fw-bold">
+                                    <a wire:click.prevent="viewTask({{ $task->id }})" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#viewTask">{{ $task->assignTo->name }}{{ $task->id }}</a>
+                                </h5>
+                                <p class="text-dark-gray m-0 fst-italic">Department:
+                                    {{ $task->department->name }}
+                                </p>
+                                <p class="text-gray m-0 w-90">
+                                    Task Title: {{ $task->name }}
+                                    <a href="#" class="gray"><i class="bi bi-paperclip p-1 gray"></i></a>
+                                </p>
+                                <span
+                                    class="text-pink mt-1 float-start">{{ $task->created_at->calendar().' '.$task->created_at->isoFormat('Do Y') }}</span>
+                                <span class="m-3 text-pink"><i class="bi bi-clock-history"></i> 24:00:00<span>
+                                <div class="float-end">
+                                    @hasrole('admin')
+                                        <a wire:click.prevent="editTask({{ $task->id }})" href="#"
+                                            class="gray" data-bs-toggle="modal"
+                                            data-bs-target="#updateTaskModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a wire:click.prevent="putTaskOnTrash({{ $task->id }})"
+                                            onclick="confirm('Confirm delete?') || event.stopImmediatePropagation()"
+                                            href="#" class="gray"><i class="bi bi-trash p-2"></i></a>
+                                    @endhasrole
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#comment" class="gray">
+                                        <i class="bi bi-chat-right-text"></i>
+                                    </a>
                                 </div>
-                            @endforeach
-                            {{-- loop end --}}
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         @endforeach
         {{-- loop end card --}}
     </div>
-{{-- <div class="row" wire:sortable-group="updateTaskOrder">
-@foreach($taskKanban as $status)
-                <div class="col-md-4" wire:key="group-{{ $status->id }}"
-wire:sortable-group.item-group="{{ $status->id }}">
-<div class="card rounded-pill bg-gradient">
-    <div class="card-body">
-        <span class="fs-5 fw-bold p-2">{{ $status->name }} {{ $status->id }}</span><span
-            class="badge position-absolute top-50 end-0 translate-middle bg-pink rounded-pill p-2">{{ count($status->tasks) }}</span>
-    </div>
-</div>
-@foreach($status->tasks as $task)
-    <div class="card br-10 m-2" wire:key="task-{{ $task->id }}" wire:sortable-group.item="{{ $task->id }}">
-        <div class="card-body">
-            <img class="profile-xl float-sm-end border" src="{{ $task->assignTo->userProfile() }}">
-            <h5 class="text-black m-0 fs-6 fw-bold">
-                <a wire:click.prevent="viewTask({{ $task->id }})" href="#" data-bs-toggle="modal"
-                    data-bs-target="#viewTask">{{ $task->assignTo->name }}{{ $task->id }}</a>
-            </h5>
-            <p class="text-dark-gray m-0 fst-italic">Department: {{ $task->department->name }}
-            </p>
-            <p class="text-gray m-0 w-90">
-                Task Title: {{ $task->name }}
-                <a href="#" class="gray"><i class="bi bi-paperclip p-1 gray"></i></a>
-            </p>
-            <span
-                class="text-pink mt-1 float-start">{{ $task->created_at->calendar().' '.$task->created_at->isoFormat('Do Y') }}</span>
-            <span class="m-3 text-pink"><i class="bi bi-clock-history"></i> 24:00:00<span>
-                    <div class="float-end">
-                        @hasrole('admin')
-                            <a wire:click.prevent="editTask({{ $task->id }})" href="#" class="gray"
-                                data-bs-toggle="modal" data-bs-target="#updateTaskModal">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a wire:click.prevent="putTaskOnTrash({{ $task->id }})"
-                                onclick="confirm('Confirm delete?') || event.stopImmediatePropagation()" href="#"
-                                class="gray"><i class="bi bi-trash p-2"></i></a>
-                        @endhasrole
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#comment" class="gray">
-                            <i class="bi bi-chat-right-text"></i>
-                        </a>
-                    </div>
-        </div>
-    </div>
-@endforeach
-</div>
-@endforeach
-</div> --}}
     <script type="text/javascript">
         window.onload = function () {
             var stageIdsArr = [];
 
-            $(".dlstage").each(function () {
+            $(".dragContent").each(function () {
 
                 // alert($(this).attr('id'));
 
@@ -129,7 +73,7 @@ wire:sortable-group.item-group="{{ $status->id }}">
 
             dragulaCards.on('drop', function (el, target, source, sibling) {
 
-                changeDealStage(el.id, target.id, source.id);
+                taskDragDrop(el.id, target.id, source.id);
 
             });
 
@@ -152,12 +96,12 @@ wire:sortable-group.item-group="{{ $status->id }}">
     </script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
-        var changedealstagedragndrop =
-            "{{ url('kanban/tasks/changedstatus/{task_id}/{status_id}/{from_id}') }}";
+        const taskKanbanApi =
+            "{{ url('kanban/tasks/{task_id}/{status_id}/{from_id}') }}";
         //Drag and drop feature
-        function changeDealStage(task_id, status_id, from_id) {
+        function taskDragDrop(task_id, status_id, from_id) {
 
-            $.get(changedealstagedragndrop, {
+            $.get(taskKanbanApi, {
 
                 'task_id': task_id,
 
@@ -170,7 +114,7 @@ wire:sortable-group.item-group="{{ $status->id }}">
                 // alert(result);
                 swal({
                     title: "Updated!",
-                    text: "Task status updated!",
+                    text: `Task ${task_id} status updated!`,
                     icon: "success",
                 });
                 var res = eval("(" + result + ")");

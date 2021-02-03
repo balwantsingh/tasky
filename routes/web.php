@@ -22,5 +22,5 @@ use Illuminate\Support\Facades\Route;
 
     Route::get('tasks/lists', App\Http\Controllers\TaskController::class)->name('list.tasks');
 
-    Route::get('kanban/tasks/changedstatus/{task_id}/{status_id}/{from_id}', [App\Http\Controllers\DashboardController::class, 'changedstatus']);
+    Route::get('kanban/tasks/{task_id}/{status_id}/{from_id}', [App\Http\Controllers\DashboardController::class, 'dragTasks'])->name('drag.tasks');
 

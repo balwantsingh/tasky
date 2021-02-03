@@ -28,49 +28,37 @@ class DashboardController extends Controller
         return view('dashboard');
     }
 
-    public function changedstatus(Request $request)
+    public function dragTasks(Request $request)
     {
-        $dealIds = $request->input('task_id');//get Todo id for task
-        // dd(explode("_", $dealIds));
+        //get Task
+        $dealIds = $request->input('task_id');
         $dealIds = explode("_", $dealIds);
-
         $d = count($dealIds) - 1;
-        // dd($dealIds[$d]);
         $deal_id = $dealIds[$d];
 
 
         //below will check in which card it moved
-        $stageIds = $request->input('status_id');//get status id
-
+        //get status id
+        $stageIds = $request->input('status_id');
         $stageIds = explode("_", $stageIds);
-
         $s = count($stageIds) - 1;
-        // dd($stageIds[$s]);
         $sfun_id = $stageIds[$s];
 
 
         //from card
         $fromIds = $request->input('from_id');
-
         $fromIds = explode("_", $fromIds);
-
         $f = count($fromIds) - 1;
-        // dd($fromIds[$f]);
         $from_id = $fromIds[$f];
 
-
-
         $fromStage = Status::find($from_id);
-        // dd($fromStage->name);
         $fromStageId = str_replace(" ", "_", $fromStage->name) . '_' . $from_id;
 
 
         $toStage = Status::find($sfun_id);
-        // dd($toStage->name);
         $toStageId = str_replace(" ", "_", $toStage->name) . '_' . $sfun_id;
 
         $deals = Task::find($deal_id);
-
         $deals->status_id = $sfun_id;
 
         $res = $deals->save();
