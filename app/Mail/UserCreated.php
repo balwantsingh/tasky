@@ -31,7 +31,7 @@ class UserCreated extends Mailable
      */
     public function build()
     {
-        dd($this->user->email, $this->user->password);
-        return $this->markdown('emails.users.added');
+        return $this->subject(config('app.name').' Account Created')
+        ->markdown('emails.users.added');
     }
 }

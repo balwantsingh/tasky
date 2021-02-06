@@ -1,12 +1,32 @@
 @component('mail::message')
-# Introduction
+# {{ config('app.name') }} Account Registered
 
-The body of your message.
+Welcome **{{ $user->name }}** your account has been created to our sites.
 
-@component('mail::button', ['url' => ''])
-Button Text
+**Do login with these credentials**
+
+@component('mail::table')
+|   username            | email                | password                   |
+|   -------------       |   :-------------:    |  -------------------:      |
+|   {{ $user->name }}   |   {{ $user->email }} |    {{ __('Pa$$word') }}    |
+
 @endcomponent
+
+@component('mail::button', ['url' => config('app.url'), 'color' => 'success'])
+Visit Website
+@endcomponent
+
+@component('mail::panel')
+For changing the password visit the url [change password]({{ route('password.request') }}).
+@endcomponent
+
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ config('app.name') }} Team
+
+@component('mail::footer')
+For changing the password visit the url [change password]({{ route('password.request') }}).
 @endcomponent
+
+@endcomponent
+
